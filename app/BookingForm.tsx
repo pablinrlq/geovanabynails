@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const services = [
   { id: "fibra", title: "Fibra de vidro", detail: "Alongamento completo", duration: "aprox. 2h30" },
@@ -17,17 +17,54 @@ export default function BookingForm() {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
+  const [occupiedTimes, setOccupiedTimes] = useState<string[]>([]);
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [submitState, setSubmitState] = useState<"idle" | "sending" | "error">("idle");
+  const [submitError, setSubmitError] = useState("");
 
   const minDate = useMemo(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split("T")[0];
+    const year = tomorrow.getFullYear();
+    const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
+    const day = String(tomorrow.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }, []);
+
+  useEffect(() => {
+    const requestedService = new URLSearchParams(window.location.search).get("servico");
+    if (requestedService && services.some((service) => service.id === requestedService)) setServiceId(requestedService);
+  }, []);
+
+  useEffect(() => {
+    if (!date) {
+      setOccupiedTimes([]);
+      setTime("");
+      return;
+    }
+    const controller = new AbortController();
+    setAvailabilityLoading(true);
+    setSubmitError("");
+    fetch(`/api/bookings?date=${encodeURIComponent(date)}`, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("availability");
+        return response.json() as Promise<{ occupiedTimes: string[] }>;
+      })
+      .then((data) => {
+        setOccupiedTimes(data.occupiedTimes);
+        setTime((current) => data.occupiedTimes.includes(current) ? "" : current);
+      })
+      .catch((error) => {
+        if (error instanceof Error && error.name !== "AbortError") setSubmitError("Não foi possível consultar os horários. Tente novamente.");
+      })
+      .finally(() => setAvailabilityLoading(false));
+    return () => controller.abort();
+  }, [date]);
 
   const selectedService = services.find((service) => service.id === serviceId) ?? services[0];
   const ready = Boolean(date && time && name.trim());
 
-  function sendRequest() {
+  async function sendRequest() {
     if (!ready) return;
     const formattedDate = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long", timeZone: "UTC" }).format(
       new Date(`${date}T12:00:00Z`),
@@ -44,7 +81,26 @@ export default function BookingForm() {
       "Pode confirmar a disponibilidade para mim?",
     ].filter(Boolean).join("\n");
 
-    window.open(`https://wa.me/5531993210742?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    setSubmitState("sending");
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), serviceId, date, time, note: note.trim() }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error ?? "Não foi possível salvar o pedido.");
+      window.location.href = `https://wa.me/5531993210742?text=${encodeURIComponent(message)}`;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Não foi possível salvar o pedido.";
+      setSubmitError(message);
+      setSubmitState("error");
+      if (message.includes("acabou de ser reservado")) {
+        setOccupiedTimes((current) => [...new Set([...current, time])]);
+        setTime("");
+      }
+    }
   }
 
   return (
@@ -75,9 +131,11 @@ export default function BookingForm() {
             <span>Data desejada</span>
             <input type="date" min={minDate} value={date} onChange={(event) => setDate(event.target.value)} />
           </label>
-          <fieldset className="time-picker">
+          <fieldset className="time-picker" id="horarios">
             <legend>Horários preferenciais</legend>
-            {timeSlots.map((slot) => (
+            {!date && <p className="availability-message">Escolha uma data para ver os horários livres.</p>}
+            {date && availabilityLoading && <p className="availability-message">Consultando horários...</p>}
+            {date && !availabilityLoading && timeSlots.filter((slot) => !occupiedTimes.includes(slot)).map((slot) => (
               <button
                 type="button"
                 className={time === slot ? "time selected" : "time"}
@@ -86,6 +144,9 @@ export default function BookingForm() {
                 onClick={() => setTime(slot)}
               >{slot}</button>
             ))}
+            {date && !availabilityLoading && timeSlots.every((slot) => occupiedTimes.includes(slot)) && (
+              <p className="availability-message unavailable">Todos os horários desta data já foram preenchidos. Escolha outro dia.</p>
+            )}
           </fieldset>
         </div>
 
@@ -105,10 +166,12 @@ export default function BookingForm() {
           <div><span>Horário</span><strong>{time || "Escolha um horário"}</strong></div>
           <div><span>Duração estimada</span><strong>{selectedService.duration.replace("aprox. ", "")}</strong></div>
         </div>
-        <button className="whatsapp-button" type="button" disabled={!ready} onClick={sendRequest}>
-          <span aria-hidden="true">↗</span> Enviar pedido pelo WhatsApp
+        <button className="whatsapp-button" type="button" disabled={!ready || submitState === "sending"} onClick={sendRequest}>
+          <span aria-hidden="true">↗</span> {submitState === "sending" ? "Salvando seu horário..." : "Reservar e continuar no WhatsApp"}
         </button>
+        {submitError && <p className="booking-error" role="alert">{submitError}</p>}
         <p className="confirmation-note"><span aria-hidden="true">✓</span> O horário é confirmado após o retorno da Geovanna no WhatsApp.</p>
+        <p className="privacy-note">Seus dados serão usados somente para organizar este atendimento.</p>
       </aside>
     </div>
   );

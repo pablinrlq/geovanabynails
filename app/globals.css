@@ -69,6 +69,7 @@ h1 em, h2 em { color: var(--rose); font-weight: 400; }
 
 .gallery-grid { display: grid; grid-template-columns: 1.2fr .8fr 1fr; grid-template-rows: 440px 360px; gap: 18px; }
 .gallery-item { position: relative; margin: 0; overflow: hidden; background: #e6dcda; }
+.gallery-item figure { position: relative; width: 100%; height: 100%; margin: 0; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
 .gallery-item:hover img { transform: scale(1.045); }
 .gallery-item figcaption { position: absolute; inset: auto 0 0; padding: 50px 22px 20px; display: flex; justify-content: space-between; align-items: end; color: white; background: linear-gradient(transparent, rgba(28,18,18,.62)); }
@@ -123,9 +124,16 @@ h1 em, h2 em { color: var(--rose); font-weight: 400; }
 .about-seal span { margin-top: 72px; font-size: 7px; font-weight: 700; line-height: 1.2; letter-spacing: .13em; text-align: center; }
 
 .booking { max-width: none; padding-left: max(28px, calc((100vw - 1184px)/2)); padding-right: max(28px, calc((100vw - 1184px)/2)); color: white; background: var(--wine); }
+.booking-page { min-height: 100vh; color: white; background: var(--wine); }
+.booking-page-header { height: 82px; max-width: 1240px; margin: auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.18); }
+.booking-page-header .brand small { color: var(--rose-light); }
+.back-link { font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+.back-link span { margin-right: 7px; }
+.booking-page .booking { padding-top: 78px; }
 .booking-intro { margin-bottom: 62px; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 80px; }
 .booking-intro .eyebrow { grid-column: 1 / -1; margin-bottom: -55px; color: var(--rose-light); }
-.booking-intro h2 em { color: var(--rose-light); }
+.booking-intro h1 { max-width: none; color: white; font-size: clamp(60px, 7vw, 96px); line-height: .9; }
+.booking-intro h1 em, .booking-intro h2 em { color: var(--rose-light); font-weight: 400; }
 .booking-intro > p:last-child { max-width: 480px; margin: 0 0 8px; color: #ead8d8; font-size: 15px; line-height: 1.8; }
 .booking-shell { display: grid; grid-template-columns: 1.45fr .75fr; align-items: start; color: var(--ink); background: white; box-shadow: 0 28px 70px rgba(41,11,17,.26); }
 .booking-form { padding: 52px; }
@@ -150,6 +158,8 @@ h1 em, h2 em { color: var(--rose); font-weight: 400; }
 .time-picker legend { margin-bottom: 10px; }
 .time { min-width: 74px; margin: 0 7px 7px 0; padding: 11px 13px; border: 1px solid var(--line); color: var(--ink); background: white; cursor: pointer; }
 .time:hover, .time.selected { color: white; border-color: var(--wine); background: var(--wine); }
+.availability-message { margin: 2px 0 0; padding: 14px; color: #776a66; background: #f8f3f1; font-size: 11px; line-height: 1.5; }
+.availability-message.unavailable { color: var(--wine); background: #f6e8e8; }
 .text-field + .text-field { margin-top: 18px; }
 .text-field span i { color: #aa9e99; font-style: normal; font-weight: 400; text-transform: lowercase; }
 .text-field textarea { resize: vertical; }
@@ -167,6 +177,55 @@ h1 em, h2 em { color: var(--rose); font-weight: 400; }
 .whatsapp-button span { margin-right: 6px; }
 .confirmation-note { margin: 15px 0 0; color: #ad9f9a; font-size: 9px; line-height: 1.5; text-align: center; }
 .confirmation-note span { color: var(--rose-light); }
+.privacy-note { margin: 8px 0 0; color: #776d69; font-size: 8px; line-height: 1.5; text-align: center; }
+.booking-error, .admin-error { margin: 14px 0 0; padding: 12px 14px; color: #7e2533; background: #fae7e8; border-left: 3px solid #9e3c4b; font-size: 11px; line-height: 1.5; }
+
+.admin-loading { min-height: 100vh; display: grid; place-items: center; color: #8c7772; background: var(--paper); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.admin-login-page { min-height: 100vh; padding: 32px; display: grid; place-items: center; color: white; background: #1f1a19; }
+.admin-login-page > .admin-logo { position: absolute; top: 30px; left: 34px; }
+.admin-logo { font: 600 26px/1 Georgia, serif; letter-spacing: -.04em; }
+.admin-logo span, .admin-logo b { color: var(--rose-light); font-weight: 400; }
+.admin-login-card { width: min(440px, 100%); padding: 52px 48px; background: #2a2322; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 30px 90px rgba(0,0,0,.3); }
+.admin-login-card > p { margin: 0 0 22px; color: var(--rose-light); font-size: 8px; font-weight: 700; letter-spacing: .18em; }
+.admin-login-card h1 { margin-bottom: 36px; font-size: 50px; line-height: .96; }
+.admin-login-card h1 em { color: var(--rose-light); font-weight: 400; }
+.admin-login-card label span { display: block; margin-bottom: 9px; color: #bcaea9; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.admin-login-card input { width: 100%; padding: 15px; border: 1px solid rgba(255,255,255,.2); color: white; background: rgba(255,255,255,.04); outline: none; }
+.admin-login-card input:focus { border-color: var(--rose-light); }
+.admin-login-card button { width: 100%; margin: 20px 0; padding: 15px; border: 0; border-radius: 999px; color: #281f1f; background: var(--rose-light); font-size: 11px; font-weight: 700; cursor: pointer; }
+.admin-login-card button:disabled { opacity: .5; }
+.admin-login-card > a { display: block; color: #a99b96; font-size: 10px; text-align: center; }
+.admin-page { min-height: 100vh; overflow: visible; background: #f5f0ed; }
+.admin-header { height: 78px; padding: 0 max(28px, calc((100vw - 1320px)/2)); display: flex; justify-content: space-between; align-items: center; color: white; background: #211b1a; }
+.admin-header > div { display: flex; align-items: center; gap: 16px; }
+.admin-header small { padding-left: 16px; border-left: 1px solid rgba(255,255,255,.2); color: #a99a95; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.admin-header a, .admin-header button { color: #d6c9c5; background: transparent; border: 0; font-size: 10px; cursor: pointer; }
+.admin-header button { padding-left: 16px; border-left: 1px solid rgba(255,255,255,.2); }
+.admin-content { max-width: 1376px; margin: auto; padding: 58px 28px 80px; }
+.admin-title { display: flex; justify-content: space-between; align-items: end; }
+.admin-title p { margin: 0 0 8px; color: var(--rose); font-size: 8px; font-weight: 700; letter-spacing: .17em; }
+.admin-title h1 { font-size: 46px; line-height: 1; }
+.admin-title > button { padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--wine); background: white; font-size: 10px; font-weight: 700; cursor: pointer; }
+.admin-metrics { margin-top: 34px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.admin-metrics div { min-height: 112px; padding: 24px; display: flex; justify-content: space-between; align-items: end; background: white; border: 1px solid rgba(80,54,51,.1); }
+.admin-metrics span { color: #766a66; font-size: 10px; text-transform: uppercase; letter-spacing: .07em; }
+.admin-metrics strong { color: var(--wine); font: 500 38px/1 Georgia, serif; }
+.admin-toolbar { margin-top: 32px; display: flex; gap: 7px; flex-wrap: wrap; }
+.admin-toolbar button { padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; color: #6c605c; background: transparent; font-size: 9px; cursor: pointer; }
+.admin-toolbar button.active { color: white; border-color: var(--wine); background: var(--wine); }
+.booking-table-wrap { margin-top: 17px; overflow-x: auto; background: white; border: 1px solid rgba(80,54,51,.1); }
+.booking-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.booking-table th { padding: 15px 18px; color: #8d807b; background: #eee7e3; font-size: 8px; font-weight: 700; letter-spacing: .09em; text-align: left; text-transform: uppercase; }
+.booking-table td { padding: 18px; border-top: 1px solid #eee7e3; color: #4d4340; font-size: 12px; vertical-align: middle; }
+.booking-table td > strong, .booking-table td > small { display: block; }
+.booking-table td > small { margin-top: 4px; color: #a09490; font-size: 8px; }
+.booking-note { max-width: 250px; color: #786c68 !important; line-height: 1.45; }
+.status-select { min-width: 112px; padding: 8px 10px; border: 1px solid transparent; border-radius: 999px; font-size: 9px; font-weight: 700; outline: none; }
+.status-select.pending { color: #8c6330; background: #fbf1dc; }
+.status-select.confirmed { color: #38684c; background: #e6f3eb; }
+.status-select.completed { color: #555d78; background: #ebedf7; }
+.status-select.cancelled { color: #8b4550; background: #f8e7e9; }
+.empty-bookings { padding: 55px 20px; color: #8e817d; font: italic 17px/1.4 Georgia, serif; text-align: center; }
 
 .faq { display: grid; grid-template-columns: .72fr 1.28fr; gap: 100px; }
 .faq-list { border-top: 1px solid var(--line); }
@@ -226,6 +285,7 @@ footer > p { grid-column: 1 / -1; margin: 32px 0 0; padding-top: 20px; border-to
   .booking-shell { grid-template-columns: 1fr; }
   .booking-summary { position: static; min-height: auto; margin: 0 20px 20px; }
   .faq { grid-template-columns: 1fr; gap: 50px; }
+  .admin-metrics { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {
@@ -253,6 +313,8 @@ footer > p { grid-column: 1 / -1; margin: 32px 0 0; padding-top: 20px; border-to
   .about-seal { width: 105px; height: 105px; right: -4px; }
   .about-stats { gap: 25px; flex-direction: column; }
   .booking-intro { margin-bottom: 40px; }
+  .booking-page-header { height: 72px; padding: 0 20px; }
+  .booking-page .booking { padding-top: 58px; }
   .booking-form { padding: 30px 20px; }
   .service-option { padding: 13px; }
   .booking-summary { margin: 0 10px 10px; padding: 34px 25px; }
@@ -260,6 +322,13 @@ footer > p { grid-column: 1 / -1; margin: 32px 0 0; padding-top: 20px; border-to
   .floating-whatsapp b { display: none; }
   footer { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
+  .admin-login-page { padding: 20px; }
+  .admin-login-page > .admin-logo { top: 22px; left: 22px; }
+  .admin-login-card { padding: 42px 25px; }
+  .admin-header { height: auto; min-height: 82px; padding: 16px 20px; }
+  .admin-header small, .admin-header a { display: none; }
+  .admin-content { padding: 42px 18px 60px; }
+  .admin-title h1 { font-size: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,10 +1,8 @@
-import BookingForm from "./BookingForm";
-
 const gallery = [
-  { src: "/images/work-05.jpg", alt: "Unhas vermelhas com acabamento em gel", tag: "Cor intensa" },
-  { src: "/images/work-06.jpg", alt: "Unhas peroladas com detalhe dourado", tag: "Elegância" },
-  { src: "/images/work-07.jpg", alt: "Francesinha branca com pontos de luz", tag: "Delicadeza" },
-  { src: "/images/work-08.jpg", alt: "Francesinha artística com laço em relevo", tag: "Nail art" },
+  { src: "/images/work-05.jpg", alt: "Unhas vermelhas com acabamento em gel", tag: "Cor intensa", href: "https://www.instagram.com/geovannaby_nails/p/Db_YpRNzSnR/" },
+  { src: "/images/work-06.jpg", alt: "Unhas peroladas com detalhe dourado", tag: "Elegância", href: "https://www.instagram.com/geovannaby_nails/p/DbT_gvzTc_Z/" },
+  { src: "/images/work-07.jpg", alt: "Francesinha branca com pontos de luz", tag: "Delicadeza", href: "https://www.instagram.com/geovannaby_nails/p/DadXKy8kxwV/" },
+  { src: "/images/work-08.jpg", alt: "Francesinha artística com laço em relevo", tag: "Nail art", href: "https://www.instagram.com/agatha_mirellah/reel/DYSaGx-uBPHtXclZ9wVAjAyGUwOcHZNWoG0mb40/" },
 ];
 
 export default function Home() {
@@ -19,7 +17,7 @@ export default function Home() {
           <a href="#portfolio">Portfólio</a>
           <a href="#servicos">Serviços</a>
           <a href="#sobre">Sobre</a>
-          <a className="nav-cta" href="#agendamento">Agendar horário</a>
+          <a className="nav-cta" href="/agendamento">Agendar horário</a>
         </nav>
       </header>
 
@@ -29,7 +27,7 @@ export default function Home() {
           <h1>Unhas impecáveis.<br /><em>Do seu jeito.</em></h1>
           <p className="hero-lead">Especialista em fibra de vidro e molde, Geovanna cria unhas elegantes, resistentes e pensadas para combinar com você.</p>
           <div className="hero-actions">
-            <a className="primary-button" href="#agendamento">Quero agendar</a>
+            <a className="primary-button" href="/agendamento">Quero agendar</a>
             <a className="text-button" href="#portfolio">Ver trabalhos <span aria-hidden="true">↘</span></a>
           </div>
           <div className="trust-row" aria-label="Diferenciais"><span>Fibra de vidro</span><i /><span>Molde</span><i /><span>Atendimento exclusivo</span></div>
@@ -38,7 +36,7 @@ export default function Home() {
         <div className="hero-visual" aria-label="Geovanna Alves, nail designer">
           <div className="hero-arch"><img src="/images/work-03.jpg" alt="Geovanna Alves, nail designer" /></div>
           <div className="signature" aria-hidden="true">G</div>
-          <a className="booking-peek" href="#agendamento">
+          <a className="booking-peek" href="/agendamento">
             <span className="booking-icon" aria-hidden="true">✦</span>
             <div><small>AGENDE EM POUCOS PASSOS</small><strong>Escolha seu procedimento</strong></div>
             <span aria-hidden="true">→</span>
@@ -55,10 +53,9 @@ export default function Home() {
         </div>
         <div className="gallery-grid">
           {gallery.map((item, index) => (
-            <figure className={`gallery-item item-${index + 1}`} key={item.src}>
-              <img src={item.src} alt={item.alt} />
-              <figcaption><span>{item.tag}</span><small>Ver detalhe <b aria-hidden="true">↗</b></small></figcaption>
-            </figure>
+            <a className={`gallery-item item-${index + 1}`} href={item.href} target="_blank" rel="noreferrer" key={item.src}>
+              <figure><img src={item.src} alt={item.alt} /><figcaption><span>{item.tag}</span><small>Ver no Instagram <b aria-hidden="true">↗</b></small></figcaption></figure>
+            </a>
           ))}
         </div>
         <a className="instagram-link" href="https://www.instagram.com/geovannaby_nails/" target="_blank" rel="noreferrer">Mais inspirações no Instagram <span aria-hidden="true">↗</span></a>
@@ -70,9 +67,9 @@ export default function Home() {
           <p>Procedimentos personalizados, com atenção à saúde das unhas naturais e um acabamento impecável.</p>
         </div>
         <div className="services-grid">
-          <article><span className="service-number">01</span><div className="service-symbol">◇</div><h3>Fibra de vidro</h3><p>Alongamento leve e resistente, moldado para respeitar o formato das suas mãos.</p><a href="#agendamento">Agendar este serviço <span>→</span></a></article>
-          <article><span className="service-number">02</span><div className="service-symbol">⌒</div><h3>Alongamento no molde</h3><p>Estrutura criada do zero para um resultado fino, elegante e totalmente personalizado.</p><a href="#agendamento">Agendar este serviço <span>→</span></a></article>
-          <article><span className="service-number">03</span><div className="service-symbol">✦</div><h3>Manutenção & gel</h3><p>Cuidado contínuo, nova cor e brilho renovado para suas unhas permanecerem lindas.</p><a href="#agendamento">Agendar este serviço <span>→</span></a></article>
+          <article><span className="service-number">01</span><div className="service-symbol">◇</div><h3>Fibra de vidro</h3><p>Alongamento leve e resistente, moldado para respeitar o formato das suas mãos.</p><a href="/agendamento?servico=fibra">Agendar este serviço <span>→</span></a></article>
+          <article><span className="service-number">02</span><div className="service-symbol">⌒</div><h3>Alongamento no molde</h3><p>Estrutura criada do zero para um resultado fino, elegante e totalmente personalizado.</p><a href="/agendamento?servico=molde">Agendar este serviço <span>→</span></a></article>
+          <article><span className="service-number">03</span><div className="service-symbol">✦</div><h3>Manutenção & gel</h3><p>Cuidado contínuo, nova cor e brilho renovado para suas unhas permanecerem lindas.</p><a href="/agendamento?servico=manutencao">Agendar este serviço <span>→</span></a></article>
         </div>
       </section>
 
@@ -91,11 +88,6 @@ export default function Home() {
         <div className="about-photo"><div className="about-arch"><img src="/images/work-03.jpg" alt="Retrato de Geovanna Alves" /></div><span className="about-mark" aria-hidden="true">GA</span><div className="about-seal"><strong>G</strong><span>NAIL<br />DESIGNER</span></div></div>
       </section>
 
-      <section className="booking section" id="agendamento">
-        <div className="booking-intro"><p className="eyebrow">Agendamento</p><h2>Reserve seu<br /><em>momento.</em></h2><p>Escolha o procedimento, uma data e um horário preferencial. Seu pedido já chega organizado no WhatsApp da Geovanna.</p></div>
-        <BookingForm />
-      </section>
-
       <section className="faq section">
         <div><p className="eyebrow">Antes de agendar</p><h2>Dúvidas<br /><em>frequentes.</em></h2></div>
         <div className="faq-list">
@@ -106,9 +98,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="final-cta"><p className="eyebrow">Seu próximo detalhe favorito</p><h2>Vamos criar suas<br /><em>próximas unhas?</em></h2><a className="primary-button" href="#agendamento">Agendar meu horário</a><div className="final-script" aria-hidden="true">Geovanna</div></section>
+      <section className="final-cta"><p className="eyebrow">Seu próximo detalhe favorito</p><h2>Vamos criar suas<br /><em>próximas unhas?</em></h2><a className="primary-button" href="/agendamento">Agendar meu horário</a><div className="final-script" aria-hidden="true">Geovanna</div></section>
 
-      <footer><a className="brand footer-brand" href="#inicio"><span>Geovanna</span><small>Alves · nail designer</small></a><div className="footer-links"><a href="#portfolio">Portfólio</a><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#agendamento">Agendamento</a></div><div className="footer-social"><a href="https://www.instagram.com/geovannaby_nails/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://wa.me/5531993210742" target="_blank" rel="noreferrer">WhatsApp ↗</a></div><p>© {new Date().getFullYear()} Geovanna Alves. Todos os direitos reservados.</p></footer>
+      <footer><a className="brand footer-brand" href="#inicio"><span>Geovanna</span><small>Alves · nail designer</small></a><div className="footer-links"><a href="#portfolio">Portfólio</a><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="/agendamento">Agendamento</a></div><div className="footer-social"><a href="https://www.instagram.com/geovannaby_nails/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://wa.me/5531993210742" target="_blank" rel="noreferrer">WhatsApp ↗</a></div><p>© {new Date().getFullYear()} Geovanna Alves. Todos os direitos reservados.</p></footer>
 
       <a className="floating-whatsapp" href="https://wa.me/5531993210742" target="_blank" rel="noreferrer" aria-label="Falar com Geovanna no WhatsApp"><span>↗</span><b>WhatsApp</b></a>
     </main>
