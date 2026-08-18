@@ -4,7 +4,7 @@ import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
-  const host = requestHeaders.get("host") ?? "geovanna-alves-nails.pablomoisesgr.chatgpt.site";
+  const host = requestHeaders.get("host") ?? new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").host;
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const baseUrl = `${protocol}://${host}`;
   const title = "Geovanna Alves | Nail Designer em fibra de vidro e molde";

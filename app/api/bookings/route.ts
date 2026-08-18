@@ -1,6 +1,4 @@
-import { and, eq, ne } from "drizzle-orm";
-import { getDb } from "../../../db";
-import { bookings } from "../../../db/schema";
+import { getSupabase } from "../../../db";
 import { isSameOrigin } from "../../../lib/admin-auth";
 
 const allowedServices: Record<string, string> = {
@@ -16,11 +14,13 @@ export async function GET(request: Request) {
   const date = new URL(request.url).searchParams.get("date") ?? "";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return Response.json({ error: "Data inválida." }, { status: 400 });
   try {
-    const rows = await getDb()
-      .select({ time: bookings.time })
-      .from(bookings)
-      .where(and(eq(bookings.date, date), ne(bookings.status, "cancelled")));
-    return Response.json({ occupiedTimes: rows.map((booking) => booking.time) });
+    const { data, error } = await getSupabase()
+      .from("bookings")
+      .select("time")
+      .eq("date", date)
+      .neq("status", "cancelled");
+    if (error) throw error;
+    return Response.json({ occupiedTimes: (data ?? []).map((booking) => booking.time) });
   } catch (error) {
     console.error("Unable to load availability", error);
     return Response.json({ error: "Não foi possível consultar os horários." }, { status: 500 });
@@ -49,20 +49,21 @@ export async function POST(request: Request) {
       return Response.json({ error: "Escolha uma data futura." }, { status: 400 });
     }
 
-    const [booking] = await getDb().insert(bookings).values({
+    const { data, error } = await getSupabase().from("bookings").insert({
       name,
-      serviceId,
-      serviceTitle: allowedServices[serviceId],
+      service_id: serviceId,
+      service_title: allowedServices[serviceId],
       date,
       time,
       note,
-    }).returning({ id: bookings.id });
+    }).select("id").single();
+    if (error) throw error;
 
-    return Response.json({ id: booking.id }, { status: 201 });
+    return Response.json({ id: data.id }, { status: 201 });
   } catch (error) {
     console.error("Unable to create booking", error);
-    const message = error instanceof Error ? error.message : "";
-    if (message.includes("UNIQUE constraint failed") || message.includes("idx_bookings_date_time_unique")) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes("23505") || message.includes("idx_bookings_date_time_unique") || message.includes("duplicate key")) {
       return Response.json({ error: "Este horário acabou de ser reservado. Escolha outro." }, { status: 409 });
     }
     return Response.json({ error: "Não foi possível salvar o pedido agora." }, { status: 500 });

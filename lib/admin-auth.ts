@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-
 const COOKIE_NAME = "geovanna_admin_session";
 const SESSION_SECONDS = 60 * 60 * 8;
 
@@ -9,7 +7,10 @@ type AdminEnv = {
 };
 
 function getSecrets() {
-  const runtimeEnv = env as unknown as AdminEnv;
+  const runtimeEnv: AdminEnv = {
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET,
+  };
   if (!runtimeEnv.ADMIN_PASSWORD || !runtimeEnv.ADMIN_SESSION_SECRET) {
     throw new Error("Admin credentials are not configured.");
   }
