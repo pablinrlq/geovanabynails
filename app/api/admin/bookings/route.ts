@@ -1,4 +1,4 @@
-import { getSupabase } from "../../../../db";
+import { getSql } from "../../../../db";
 import { isAdminRequest, isSameOrigin } from "../../../../lib/admin-auth";
 
 const allowedStatuses = new Set(["pending", "confirmed", "completed", "cancelled"]);
@@ -6,20 +6,15 @@ const allowedStatuses = new Set(["pending", "confirmed", "completed", "cancelled
 export async function GET(request: Request) {
   try {
     if (!(await isAdminRequest(request))) return Response.json({ error: "Não autorizado." }, { status: 401 });
-    const { data, error } = await getSupabase().from("bookings").select("*").order("created_at", { ascending: false }).limit(250);
-    if (error) throw error;
-    const bookings = (data ?? []).map((booking) => ({
-      id: booking.id,
-      name: booking.name,
-      serviceId: booking.service_id,
-      serviceTitle: booking.service_title,
-      date: booking.date,
-      time: booking.time,
-      note: booking.note,
-      status: booking.status,
-      createdAt: booking.created_at,
-    }));
-    return Response.json({ bookings });
+    const sql = getSql();
+    const rows = await sql`
+      select id, name, service_id as "serviceId", service_title as "serviceTitle",
+             to_char(date, 'YYYY-MM-DD') as date, time, note, status, created_at as "createdAt"
+      from bookings
+      order by created_at desc
+      limit 250
+    `;
+    return Response.json({ bookings: rows });
   } catch (error) {
     console.error("Unable to list bookings", error);
     return Response.json({ error: "Não foi possível carregar os agendamentos." }, { status: 500 });
@@ -34,10 +29,10 @@ export async function PATCH(request: Request) {
     if (!Number.isInteger(id) || !status || !allowedStatuses.has(status)) {
       return Response.json({ error: "Atualização inválida." }, { status: 400 });
     }
-    const { data, error } = await getSupabase().from("bookings").update({ status }).eq("id", id!).select("id, status").maybeSingle();
-    if (error) throw error;
-    if (!data) return Response.json({ error: "Agendamento não encontrado." }, { status: 404 });
-    return Response.json({ booking: data });
+    const sql = getSql();
+    const rows = await sql`update bookings set status = ${status} where id = ${id!} returning id, status`;
+    if (rows.length === 0) return Response.json({ error: "Agendamento não encontrado." }, { status: 404 });
+    return Response.json({ booking: rows[0] });
   } catch (error) {
     console.error("Unable to update booking", error);
     return Response.json({ error: "Não foi possível atualizar o agendamento." }, { status: 500 });

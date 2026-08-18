@@ -1,4 +1,4 @@
-import { getSupabase } from "../../../db";
+import { getSql } from "../../../db";
 import { isSameOrigin } from "../../../lib/admin-auth";
 
 const allowedServices: Record<string, string> = {
@@ -14,13 +14,9 @@ export async function GET(request: Request) {
   const date = new URL(request.url).searchParams.get("date") ?? "";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return Response.json({ error: "Data inválida." }, { status: 400 });
   try {
-    const { data, error } = await getSupabase()
-      .from("bookings")
-      .select("time")
-      .eq("date", date)
-      .neq("status", "cancelled");
-    if (error) throw error;
-    return Response.json({ occupiedTimes: (data ?? []).map((booking) => booking.time) });
+    const sql = getSql();
+    const rows = await sql`select time from bookings where date = ${date} and status <> 'cancelled'`;
+    return Response.json({ occupiedTimes: rows.map((booking) => booking.time) });
   } catch (error) {
     console.error("Unable to load availability", error);
     return Response.json({ error: "Não foi possível consultar os horários." }, { status: 500 });
@@ -49,17 +45,14 @@ export async function POST(request: Request) {
       return Response.json({ error: "Escolha uma data futura." }, { status: 400 });
     }
 
-    const { data, error } = await getSupabase().from("bookings").insert({
-      name,
-      service_id: serviceId,
-      service_title: allowedServices[serviceId],
-      date,
-      time,
-      note,
-    }).select("id").single();
-    if (error) throw error;
+    const sql = getSql();
+    const rows = await sql`
+      insert into bookings (name, service_id, service_title, date, time, note)
+      values (${name}, ${serviceId}, ${allowedServices[serviceId]}, ${date}, ${time}, ${note})
+      returning id
+    `;
 
-    return Response.json({ id: data.id }, { status: 201 });
+    return Response.json({ id: rows[0].id }, { status: 201 });
   } catch (error) {
     console.error("Unable to create booking", error);
     const message = error instanceof Error ? error.message : String(error);
