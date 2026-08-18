@@ -142,12 +142,12 @@ export default function AdminDashboard() {
             <tbody>
               {visibleBookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td><strong>{booking.name}</strong><small>Pedido #{booking.id}</small></td>
-                  <td>{booking.serviceTitle}</td>
-                  <td>{new Date(`${booking.date}T12:00:00`).toLocaleDateString("pt-BR")}</td>
-                  <td><strong>{booking.time}</strong></td>
-                  <td className="booking-note">{booking.note || "—"}</td>
-                  <td><select className={`status-select ${booking.status}`} value={booking.status} onChange={(event) => updateStatus(booking.id, event.target.value as Booking["status"])}><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option></select></td>
+                  <td data-label="Cliente"><strong>{booking.name}</strong><small>Pedido #{booking.id}</small></td>
+                  <td data-label="Procedimento">{booking.serviceTitle}</td>
+                  <td data-label="Data">{new Date(`${booking.date}T12:00:00`).toLocaleDateString("pt-BR")}</td>
+                  <td data-label="Horário"><strong>{booking.time}</strong></td>
+                  <td data-label="Observação" className="booking-note">{booking.note || "—"}</td>
+                  <td data-label="Status"><select aria-label={`Status do agendamento de ${booking.name}`} className={`status-select ${booking.status}`} value={booking.status} onChange={(event) => updateStatus(booking.id, event.target.value as Booking["status"])}><option value="pending">Pendente</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option></select></td>
                 </tr>
               ))}
             </tbody>

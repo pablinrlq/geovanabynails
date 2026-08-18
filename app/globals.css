@@ -331,6 +331,121 @@ footer > p { grid-column: 1 / -1; margin: 32px 0 0; padding-top: 20px; border-to
   .admin-title h1 { font-size: 38px; }
 }
 
+/* Mobile-first refinements for the customer journey and admin panel. */
+@media (max-width: 640px) {
+  html { scroll-padding-top: 72px; }
+  body { min-width: 320px; }
+  button, input, select, textarea { font-size: 16px; }
+  .site-header { position: sticky; top: 0; z-index: 30; height: 68px; padding: 0 16px; background: rgba(247,242,238,.94); backdrop-filter: blur(14px); }
+  .site-header .brand span, .booking-page-header .brand span { font-size: 24px; }
+  .nav-cta { min-height: 44px; padding: 0 15px; display: inline-flex; align-items: center; }
+  .hero { padding: 42px 18px 46px; gap: 34px; }
+  .hero-copy h1 { font-size: clamp(51px, 15.5vw, 72px); line-height: .91; }
+  .hero-lead { margin-top: 24px; font-size: 16px; line-height: 1.65; }
+  .hero-actions { width: 100%; gap: 12px; }
+  .hero-actions .primary-button { width: 100%; min-height: 52px; }
+  .hero-actions .text-button { min-height: 44px; display: inline-flex; align-items: center; }
+  .trust-row { margin-top: 26px; gap: 9px; font-size: 9px; line-height: 1.45; }
+  .hero-visual { min-height: 430px; }
+  .hero-visual::before { width: min(92vw, 350px); height: min(92vw, 350px); }
+  .booking-peek { left: 0; right: 0; bottom: 0; min-height: 76px; padding: 13px 14px; gap: 11px; }
+  .booking-peek small { font-size: 7px; }
+  .booking-peek strong { font-size: 14px; }
+  .booking-icon { width: 38px; height: 38px; }
+  .marquee { justify-content: flex-start; overflow: hidden; padding: 19px 22px; gap: 20px; font-size: 9px; }
+  .section { padding: 70px 18px; }
+  .section-heading h2, .experience-copy h2, .about-copy h2, .faq h2 { font-size: clamp(45px, 13.5vw, 62px); }
+  .section-heading > p, .experience-copy > p:not(.eyebrow) { font-size: 15px; line-height: 1.65; }
+  .gallery-grid { grid-template-rows: repeat(4, min(112vw, 470px)); gap: 12px; }
+  .gallery-item figcaption { padding: 45px 16px 16px; }
+  .gallery-item figcaption small { font-size: 8px; }
+  .services { padding-left: 18px; padding-right: 18px; }
+  .services-grid article { min-height: auto; padding: 28px 4px 30px; }
+  .services-grid p { min-height: auto; }
+  .services-grid a { min-height: 44px; margin-top: 22px; align-items: center; }
+  .experience-photo > span { right: 0; bottom: 8px; }
+  .about { padding-left: 18px; padding-right: 18px; }
+  .about-photo { min-height: 430px; overflow: hidden; }
+  .about-photo::before { width: min(92vw, 350px); height: min(92vw, 350px); }
+  .faq summary { min-height: 68px; padding: 20px 0; font-size: 17px; }
+  .final-cta { min-height: 480px; padding: 90px 18px; }
+  .final-cta h2 { font-size: clamp(48px, 14vw, 68px); }
+  .final-cta .primary-button { width: 100%; min-height: 52px; }
+  .floating-whatsapp { right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
+
+  .booking-page-header { position: sticky; top: 0; z-index: 30; height: 68px; padding: 0 16px; background: rgba(111,40,53,.96); backdrop-filter: blur(14px); }
+  .back-link { min-height: 44px; display: inline-flex; align-items: center; }
+  .booking-page .booking { padding: 48px 14px max(28px, env(safe-area-inset-bottom)); }
+  .booking-intro { margin-bottom: 34px; }
+  .booking-intro h1 { font-size: clamp(48px, 15vw, 66px); }
+  .booking-intro > p:last-child { font-size: 14px; line-height: 1.65; }
+  .booking-shell { margin: 0; box-shadow: 0 16px 40px rgba(41,11,17,.2); }
+  .booking-form { padding: 30px 18px; }
+  .booking-step + .booking-step { margin-top: 34px; padding-top: 32px; }
+  .step-heading { gap: 12px; }
+  .step-heading > span { width: 36px; height: 36px; flex: 0 0 36px; }
+  .step-heading h3 { font-size: 21px; }
+  .service-picker { grid-template-columns: 1fr; }
+  .service-option { min-height: 74px; padding: 14px; touch-action: manipulation; }
+  .service-option strong { font-size: 16px; }
+  .date-field input, .text-field input, .text-field textarea { min-height: 50px; padding: 14px; }
+  .time-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .time-picker legend, .time-picker .availability-message { grid-column: 1 / -1; }
+  .time { width: 100%; min-width: 0; min-height: 48px; margin: 0; padding: 12px 8px; border-radius: 6px; touch-action: manipulation; }
+  .booking-summary { margin: 0; padding: 32px 20px; }
+  .booking-summary h3 { margin-bottom: 26px; font-size: 30px; }
+  .summary-list div { padding: 15px 0; }
+  .whatsapp-button { min-height: 52px; padding: 13px 14px; font-size: 12px; line-height: 1.35; touch-action: manipulation; }
+  .confirmation-note, .privacy-note { font-size: 10px; }
+
+  .admin-login-page { padding: 88px 16px 24px; align-items: center; }
+  .admin-login-page > .admin-logo { top: 26px; left: 20px; }
+  .admin-login-card { padding: 36px 22px; }
+  .admin-login-card h1 { margin-bottom: 28px; font-size: 43px; }
+  .admin-login-card input, .admin-login-card button { min-height: 50px; }
+  .admin-header { position: sticky; top: 0; z-index: 30; min-height: 68px; padding: 12px 16px; }
+  .admin-header .admin-logo { font-size: 22px; }
+  .admin-header button { min-width: 48px; min-height: 44px; padding-left: 12px; }
+  .admin-content { padding: 34px 14px 56px; }
+  .admin-title { align-items: center; gap: 12px; }
+  .admin-title h1 { font-size: 34px; }
+  .admin-title > button { min-height: 44px; padding: 0 15px; }
+  .admin-metrics { margin-top: 24px; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .admin-metrics div { min-height: 100px; padding: 17px; flex-direction: column; align-items: flex-start; }
+  .admin-metrics div:last-child { grid-column: 1 / -1; min-height: 82px; flex-direction: row; align-items: end; }
+  .admin-metrics span { font-size: 9px; line-height: 1.35; }
+  .admin-metrics strong { font-size: 34px; }
+  .admin-toolbar { margin: 24px -14px 0; padding: 0 14px 5px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .admin-toolbar::-webkit-scrollbar { display: none; }
+  .admin-toolbar button { min-height: 42px; padding: 0 17px; flex: 0 0 auto; scroll-snap-align: start; font-size: 10px; }
+  .booking-table-wrap { margin-top: 12px; overflow: visible; border: 0; background: transparent; }
+  .booking-table { min-width: 0; border-collapse: separate; border-spacing: 0 12px; }
+  .booking-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .booking-table tbody, .booking-table tr, .booking-table td { display: block; width: 100%; }
+  .booking-table tr { padding: 10px 16px; background: white; border: 1px solid rgba(80,54,51,.1); box-shadow: 0 8px 24px rgba(70,43,40,.05); }
+  .booking-table td { min-height: 48px; padding: 13px 0 13px 44%; display: flex; align-items: center; justify-content: flex-end; position: relative; border-top: 1px solid #eee7e3; text-align: right; font-size: 13px; }
+  .booking-table td:first-child { border-top: 0; }
+  .booking-table td::before { content: attr(data-label); position: absolute; left: 0; width: 40%; color: #8d807b; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+  .booking-table td > strong, .booking-table td > small { text-align: right; }
+  .booking-note { max-width: none; line-height: 1.5; }
+  .status-select { min-width: 138px; min-height: 44px; padding: 8px 12px; font-size: 11px; }
+  .empty-bookings { padding: 38px 18px; background: white; border: 1px solid rgba(80,54,51,.1); }
+}
+
+@media (max-width: 370px) {
+  .site-header .brand span, .booking-page-header .brand span { font-size: 21px; }
+  .nav-cta { padding: 0 11px; font-size: 10px; }
+  .booking-page-header .back-link { font-size: 10px; }
+  .admin-title h1 { font-size: 30px; }
+  .admin-title > button { padding: 0 12px; }
+  .booking-table td { padding-left: 41%; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  a, button, select, summary { touch-action: manipulation; }
+  .primary-button:hover, .booking-peek:hover, .whatsapp-button:not(:disabled):hover { transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; }
